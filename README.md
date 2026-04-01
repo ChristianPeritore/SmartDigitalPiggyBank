@@ -1,51 +1,42 @@
-# 🐷 Digital Piggy Bank
+# 🐷 Digital Piggy Bank Pro
 
-A sleek, **dark-themed** web application to track your savings goals in real-time. This tool calculates exactly how much you need to reach your target, both in currency and percentage.
+A modern, interactive dashboard to track your personal savings goals. This advanced version doesn't just calculate what you're missing—it visualizes your journey with dynamic charts and keeps your data persistent.
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
-* **Goal Tracking:** Set a specific reason for your savings (e.g., "New Laptop" or "Summer Trip").
-* **Real-time Analytics:** Instantly calculates the remaining amount and percentage left.
-* **Visual Progress:** Includes a dynamic progress bar to visualize your savings journey.
-* **Multilingual Support:** Switch between 5 languages via a top-right toggle:
-    * 🇮🇹 Italian
-    * 🇺🇸 English
-    * 🇫🇷 French
-    * 🇩🇪 German
-    * 🇪🇸 Spanish
-* **Responsive Dark Mode:** Modern UI designed for high readability and eye comfort.
+* **📊 Interactive Charts:** Beautiful Doughnut Charts powered by *Chart.js* for immediate visual impact.
+* **💾 Auto-Save:** Integrated with `localStorage`. Your goal, savings, language, and currency settings stay saved even after closing the browser.
+* **💱 Multi-Currency:** Full support for **Euro (€)**, **Dollar ($)**, and **Pound (£)** with automatic conversion of entered values.
+* **🌍 Multi-Language:** Seamlessly switch between 5 languages (IT, EN, FR, DE, ES) using the top-right toggle.
+* **📈 Detailed Analytics:** Real-time display of completion percentage and the exact remaining balance.
+* **🌙 Premium Dark Theme:** Sleek UI designed for high readability, modern aesthetics, and eye comfort.
 
 ---
 
 ## 🛠️ Tech Stack
 
-This project is built using pure web technologies, making it extremely lightweight and fast:
-
-* **HTML5:** Structure and semantics.
-* **CSS3:** Custom properties (variables) for the dark theme and Flexbox for layout.
-* **JavaScript:** Vanilla ES6+ for logic and dynamic translations.
+* **HTML5** & **CSS3**: Grid layouts and custom properties (CSS variables).
+* **JavaScript (ES6+)**: Core logic, multi-language handling, and data persistence.
+* **Chart.js**: External library for animated, responsive data visualization.
 
 ---
 
-## 🚀 How to use
+## 🚀 Getting Started
 
-1.  **Clone** the repository:
-    ```bash
-    git clone [https://github.com/your-username/digital-piggy-bank.git](https://github.com/your-username/digital-piggy-bank.git)
-    ```
-2.  **Open** the `index.html` file in any modern web browser.
-3.  **Select** your preferred language from the dropdown menu.
-4.  **Enter** your goal, the reason, and the amount already saved.
-5.  **Click "Calculate"** to see your progress!
+1.  **Download** the `index.html` file.
+2.  **Open** the file in any modern web browser (Chrome, Firefox, Edge, Safari).
+3.  **Set up** your goal:
+    * Select your preferred **Language** and **Currency** in the top-right corner.
+    * Enter your **Saving Reason** (e.g., "New MacBook Pro").
+    * Enter your **Total Target** and the **Amount Saved** so far.
+4.  **Click "Save & Update"**: Watch your dashboard come to life with your updated progress!
 
 ---
 
-## 📸 Preview
-
-> [!TIP]
-> The app is designed to be mobile-friendly. You can use it on your smartphone just as easily as on a desktop!
+## 💡 Privacy Note
+All data entered is stored locally within your browser's **localStorage**. No data is sent to external servers or shared with third parties. Your financial goals remain 100% private.
 
 ---
 
