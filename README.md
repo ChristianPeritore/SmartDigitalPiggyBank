@@ -1,43 +1,64 @@
-# 🐷 Digital Piggy Bank Pro
+# 🐷 Digital Piggy Bank Pro & CLI
 
-A modern, interactive dashboard to track your personal savings goals. This advanced version doesn't just calculate what you're missing—it visualizes your journey with dynamic charts and keeps your data persistent.
-
----
-
-## ✨ Key Features
-
-* **📊 Interactive Charts:** Beautiful Doughnut Charts powered by *Chart.js* for immediate visual impact.
-* **💾 Auto-Save:** Integrated with `localStorage`. Your goal, savings, language, and currency settings stay saved even after closing the browser.
-* **💱 Multi-Currency:** Full support for **Euro (€)**, **Dollar ($)**, and **Pound (£)** with automatic conversion of entered values.
-* **🌍 Multi-Language:** Seamlessly switch between 5 languages (IT, EN, FR, DE, ES) using the top-right toggle.
-* **📈 Detailed Analytics:** Real-time display of completion percentage and the exact remaining balance.
-* **🌙 Premium Dark Theme:** Sleek UI designed for high readability, modern aesthetics, and eye comfort.
+A versatile suite of tools to track your personal savings goals. Whether you prefer a sleek **Web Dashboard**, a fast **C++ Executable**, or a flexible **Python Script**, this project ensures you hit your targets with style and precision.
 
 ---
 
-## 🛠️ Tech Stack
+## ✨ Features Across All Versions
 
-* **HTML5** & **CSS3**: Grid layouts and custom properties (CSS variables).
-* **JavaScript (ES6+)**: Core logic, multi-language handling, and data persistence.
-* **Chart.js**: External library for animated, responsive data visualization.
-
----
-
-## 🚀 Getting Started
-
-1.  **Download** the `index.html` file.
-2.  **Open** the file in any modern web browser (Chrome, Firefox, Edge, Safari).
-3.  **Set up** your goal:
-    * Select your preferred **Language** and **Currency** in the top-right corner.
-    * Enter your **Saving Reason** (e.g., "New MacBook Pro").
-    * Enter your **Total Target** and the **Amount Saved** so far.
-4.  **Click "Save & Update"**: Watch your dashboard come to life with your updated progress!
+* **🎯 Goal Centric:** Always define *what* you are saving for (e.g., "New Camera" or "Emergency Fund").
+* **📊 Smart Analytics:** Instant calculation of the **Remaining Amount** and **Completion Percentage**.
+* **💾 Data Persistence:**
+    * **Web:** Uses `localStorage` (Browser).
+    * **C++ & Python:** Uses local files (`data.txt` / `piggy_data.json`).
+* **🌍 Multi-Language:** Full support for **IT, EN, FR, DE, ES**.
+* **💱 Multi-Currency:** Toggle between **€, $, and £**.
 
 ---
 
-## 💡 Privacy Note
-All data entered is stored locally within your browser's **localStorage**. No data is sent to external servers or shared with third parties. Your financial goals remain 100% private.
+## 🚀 How to Use
+
+### 1. Web Version (HTML/JS)
+*Best for: A premium visual experience with animated charts.*
+* **Setup:** Open `index.html` in any modern web browser.
+* **Features:** Includes **Chart.js** integration for a dynamic doughnut chart and a fully responsive dark theme.
+* **Persistence:** Data is saved automatically in your browser's cache.
+
+### 2. C++ Version
+*Best for: High performance and minimal resource usage.*
+* **Compilation:** Use a C++ compiler (like `g++`):
+    ```bash
+    g++ main.cpp -o piggybank
+    ./piggybank
+    ```
+* **Usage:** Follow the CLI prompts to enter your data.
+* **Persistence:** Saves your progress in a `data.txt` file in the same folder.
+
+### 3. Python Version
+*Best for: Flexibility and ease of modification.*
+* **Requirements:** Requires Python 3.x installed.
+* **Execution:**
+    ```bash
+    python piggy_bank.py
+    ```
+* **Features:** Includes an ASCII progress bar (`[████---]`) and robust JSON data handling.
+* **Persistence:** Saves state in `piggy_data.json` with UTF-8 encoding.
 
 ---
 
-*Created with ❤️ for smart savers.*
+## 🛠️ Technical Comparison
+
+| Feature | Web (HTML/CSS/JS) | C++ (CLI) | Python (CLI) |
+| :--- | :--- | :--- | :--- |
+| **Interface** | Modern Dark UI | Terminal | Terminal |
+| **Visuals** | Animated Charts | Text-based | ASCII Progress Bar |
+| **Storage** | LocalStorage | .txt File | .json File |
+| **Dependencies** | Chart.js (CDN) | Standard Library | Standard Library |
+
+---
+
+## 💡 Privacy & Security
+Regardless of the version you choose, **all data stays on your machine**. No financial information is ever transmitted to a server or third-party service.
+---
+
+*Created with ❤️ for smart savers worldwide.*
