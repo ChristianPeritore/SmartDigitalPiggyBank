@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salvadanaio Pro Dash - AutoSave</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-color: #38bdf8;
+            --secondary-color: #818cf8;
+            --success-color: #4ade80;
+            --warning-color: #facc15;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+        }
+
+        .settings-bar {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        select {
+            background: #334155;
+            color: white;
+            border: 2px solid #475569;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        h1 { 
+            font-size: 2.2rem; 
+            text-align: center; 
+            margin-bottom: 2rem;
+            background: linear-gradient(to right, var(--accent-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) { .main-layout { grid-template-columns: 1fr; } }
+
+        .input-section { display: flex; flex-direction: column; gap: 15px; }
+        .input-group { display: flex; flex-direction: column; gap: 5px; }
+        label { font-size: 0.85rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        input {
+            padding: 14px;
+            border-radius: 12px;
+            border: 2px solid #334155;
+            background-color: #0f172a;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:active { transform: scale(0.98); }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        #percentage-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -40%);
+            text-align: center;
+        }
+
+        #perc-val { font-size: 2.8rem; font-weight: 900; color: var(--accent-color); display: block; }
+        #perc-label { font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: bold; }
+
+        .summary-box {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid #334155;
+            margin-top: 25px;
+        }
+
+        .stat-row { display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #334155; }
+        .stat-label { color: #94a3b8; font-weight: 500; }
+        .stat-value { font-weight: bold; }
+        .missing-highlight { color: var(--warning-color); font-size: 1.3rem; }
+        .saved-highlight { color: var(--success-color); font-size: 1.3rem; }
+    </style>
+</head>
+<body onload="loadData()">
+
+<div class="container">
+    <div class="settings-bar">
+        <select id="currencySelect" onchange="convertCurrency()">
+            <option value="EUR">€ EUR</option>
+            <option value="USD">$ USD</option>
+            <option value="GBP">£ GBP</option>
+        </select>
+        <select id="langSelect" onchange="updateLanguage()">
+            <option value="it">🇮🇹 IT</option>
+            <option value="en">🇺🇸 EN</option>
+            <option value="fr">🇫🇷 FR</option>
+            <option value="de">🇩🇪 DE</option>
+            <option value="sp">🇪🇸 SP</option>
+        </select>
+    </div>
+
+    <h1 id="title">Salvadanaio Digitale</h1>
+    
+    <div class="main-layout">
+        <div class="input-section">
+            <div class="input-group">
+                <label id="lblReason">Obiettivo di risparmio</label>
+                <input type="text" id="reason" placeholder="...">
+            </div>
+            <div class="input-group">
+                <label id="lblTarget">Target Totale</label>
+                <input type="number" id="target" step="0.01">
+            </div>
+            <div class="input-group">
+                <label id="lblSaved">Budget Attuale</label>
+                <input type="number" id="saved" step="0.01">
+            </div>
+            <button onclick="calculate()" id="btnCalc">Salva e Aggiorna</button>
+        </div>
+
+        <div class="chart-section" id="resultsArea" style="visibility: hidden;">
+            <div class="chart-container">
+                <canvas id="myChart"></canvas>
+                <div id="percentage-center">
+                    <span id="perc-val">0%</span>
+                    <span id="perc-label">Completato</span>
+                </div>
+            </div>
+            
+            <div class="summary-box">
+                <div class="stat-row">
+                    <span class="stat-label" id="txtMissing">Mancano:</span>
+                    <span id="valRemaining" class="stat-value missing-highlight">0.00</span>
+                </div>
+                <div class="stat-row" style="border:none; margin:0;">
+                    <span class="stat-label" id="txtSavedPerc">Accumulato:</span>
+                    <span id="valSavedPerc" class="stat-value saved-highlight">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let myChart = null;
+    let currentCurrency = 'EUR';
+    const exchangeRates = { EUR: 1, USD: 1.08, GBP: 0.85 };
+    const currencySymbols = { EUR: '€', USD: '$', GBP: '£' };
+
+    const translations = {
+        it: { title: "Salvadanaio Digitale", lblReason: "Obiettivo di risparmio", lblTarget: "Target Totale", lblSaved: "Budget Attuale", btnCalc: "Salva e Aggiorna", txtMissing: "Mancano:", txtSavedPerc: "Accumulato:", completed: "Completato", saved: "Risparmiato", missing: "Mancante" },
+        en: { title: "Digital Piggy Bank", lblReason: "Saving Goal", lblTarget: "Total Target", lblSaved: "Current Budget", btnCalc: "Save & Update", txtMissing: "Remaining:", txtSavedPerc: "Saved:", completed: "Completed", saved: "Saved", missing: "Missing" },
+        fr: { title: "Ma Tirelire", lblReason: "Objectif d'épargne", lblTarget: "Cible Totale", lblSaved: "Budget Actuel", btnCalc: "Sauver et Mettre à jour", txtMissing: "Restant:", txtSavedPerc: "Accumulé:", completed: "Complété", saved: "Épargné", missing: "Manquant" },
+        de: { title: "Sparschwein", lblReason: "Sparziel", lblTarget: "Gesamtziel", lblSaved: "Aktuelles Budget", btnCalc: "Speichern", txtMissing: "Fehlend:", txtSavedPerc: "Gespart:", completed: "Abgeschlossen", saved: "Gespart", missing: "Fehlend" },
+        sp: { title: "Mi Hucha Digital", lblReason: "Meta de ahorro", lblTarget: "Meta Total", lblSaved: "Ahorro Actual", btnCalc: "Guardar y Actualizar", txtMissing: "Faltante:", txtSavedPerc: "Acumulado:", completed: "Completado", saved: "Ahorrado", missing: "Faltante" }
+    };
+
+    // --- LOGICA DI SALVATAGGIO ---
+    function saveData() {
+        const data = {
+            reason: document.getElementById('reason').value,
+            target: document.getElementById('target').value,
+            saved: document.getElementById('saved').value,
+            currency: document.getElementById('currencySelect').value,
+            lang: document.getElementById('langSelect').value
+        };
+        localStorage.setItem('piggyBankData', JSON.stringify(data));
+    }
+
+    function loadData() {
+        const savedData = localStorage.getItem('piggyBankData');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            document.getElementById('reason').value = data.reason || "";
+            document.getElementById('target').value = data.target || "";
+            document.getElementById('saved').value = data.saved || "";
+            document.getElementById('currencySelect').value = data.currency || "EUR";
+            document.getElementById('langSelect').value = data.lang || "it";
+            
+            currentCurrency = data.currency || "EUR";
+            updateLanguage(); // Questo innesca anche il calculate()
+        }
+    }
+
+    function convertCurrency() {
+        const newCurrency = document.getElementById('currencySelect').value;
+        const targetInput = document.getElementById('target');
+        const savedInput = document.getElementById('saved');
+        
+        if(targetInput.value) {
+            const inEur = parseFloat(targetInput.value) / exchangeRates[currentCurrency];
+            targetInput.value = (inEur * exchangeRates[newCurrency]).toFixed(2);
+        }
+        if(savedInput.value) {
+            const inEur = parseFloat(savedInput.value) / exchangeRates[currentCurrency];
+            savedInput.value = (inEur * exchangeRates[newCurrency]).toFixed(2);
+        }
+        
+        currentCurrency = newCurrency;
+        calculate();
+    }
+
+    function updateLanguage() {
+        const lang = document.getElementById('langSelect').value;
+        const t = translations[lang];
+        document.getElementById('title').innerText = t.title;
+        document.getElementById('lblReason').innerText = t.lblReason;
+        document.getElementById('lblTarget').innerText = t.lblTarget;
+        document.getElementById('lblSaved').innerText = t.lblSaved;
+        document.getElementById('btnCalc').innerText = t.btnCalc;
+        document.getElementById('txtMissing').innerText = t.txtMissing;
+        document.getElementById('txtSavedPerc').innerText = t.txtSavedPerc;
+        document.getElementById('perc-label').innerText = t.completed;
+        calculate();
+    }
+
+    function calculate() {
+        const target = parseFloat(document.getElementById('target').value) || 0;
+        const saved = parseFloat(document.getElementById('saved').value) || 0;
+        const lang = document.getElementById('langSelect').value;
+        const symbol = currencySymbols[currentCurrency];
+        
+        if (target <= 0) {
+            document.getElementById('resultsArea').style.visibility = 'hidden';
+            return;
+        }
+
+        document.getElementById('resultsArea').style.visibility = 'visible';
+        
+        const remaining = Math.max(target - saved, 0);
+        const percentSaved = Math.min((saved / target) * 100, 100);
+
+        document.getElementById('valRemaining').innerText = symbol + " " + remaining.toLocaleString(undefined, {minimumFractionDigits: 2});
+        document.getElementById('valSavedPerc').innerText = percentSaved.toFixed(1) + "%";
+        document.getElementById('perc-val').innerText = Math.floor(percentSaved) + "%";
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        if (myChart) myChart.destroy();
+
+        myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: [translations[lang].saved, translations[lang].missing],
+                datasets: [{
+                    data: [saved, remaining],
+                    backgroundColor: ['#4ade80', '#334155'],
+                    borderWidth: 0,
+                    cutout: '85%'
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                animation: { duration: 800 }
+            }
+        });
+
+        saveData(); // Salva i dati ad ogni calcolo riuscito
+    }
+</script>
+
+</body>
+</html>
