@@ -1,43 +1,43 @@
 # 🐷 Digital Piggy Bank Pro
 
-Una dashboard moderna e interattiva per monitorare i tuoi obiettivi di risparmio. Questa versione avanzata non solo calcola quanto ti manca, ma visualizza i tuoi progressi con grafici dinamici e salva i dati localmente.
+A modern, interactive dashboard to track your personal savings goals. This advanced version doesn't just calculate what you're missing—it visualizes your journey with dynamic charts and keeps your data persistent.
 
 ---
 
-## ✨ Nuove Funzionalità
+## ✨ Key Features
 
-* **📊 Grafici Interattivi:** Visualizzazione a ciambella (Doughnut Chart) alimentata da *Chart.js* per un impatto visivo immediato.
-* **💾 Auto-Save:** Grazie all'integrazione con `localStorage`, i tuoi dati (obiettivo, risparmi, lingua e valuta) rimangono salvati anche se chiudi il browser.
-* **💱 Multi-Valuta:** Supporto per **Euro (€)**, **Dollaro ($)** e **Sterlina (£)** con conversione automatica dei valori inseriti.
-* **🌍 Multi-Lingua:** Interfaccia disponibile in 5 lingue (IT, EN, FR, DE, ES) con cambio istantaneo.
-* **📈 Statistiche Dettagliate:** Visualizzazione della percentuale di completamento e dell'importo esatto mancante.
-* **🌙 Tema Dark Premium:** Design moderno ottimizzato per il comfort visivo e l'estetica.
+* **📊 Interactive Charts:** Beautiful Doughnut Charts powered by *Chart.js* for immediate visual impact.
+* **💾 Auto-Save:** Integrated with `localStorage`. Your goal, savings, language, and currency settings stay saved even after closing the browser.
+* **💱 Multi-Currency:** Full support for **Euro (€)**, **Dollar ($)**, and **Pound (£)** with automatic conversion of entered values.
+* **🌍 Multi-Language:** Seamlessly switch between 5 languages (IT, EN, FR, DE, ES) using the top-right toggle.
+* **📈 Detailed Analytics:** Real-time display of completion percentage and the exact remaining balance.
+* **🌙 Premium Dark Theme:** Sleek UI designed for high readability, modern aesthetics, and eye comfort.
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **HTML5** & **CSS3** (Layout a griglia e variabili personalizzate).
-* **JavaScript (ES6+)**: Logica di calcolo, gestione delle lingue e persistenza dati.
-* **Chart.js**: Libreria esterna per la generazione dei grafici animati.
+* **HTML5** & **CSS3**: Grid layouts and custom properties (CSS variables).
+* **JavaScript (ES6+)**: Core logic, multi-language handling, and data persistence.
+* **Chart.js**: External library for animated, responsive data visualization.
 
 ---
 
-## 🚀 Come Iniziare
+## 🚀 Getting Started
 
-1.  **Scarica** il file `index.html`.
-2.  **Apri** il file in un browser moderno (Chrome, Firefox, Edge, Safari).
-3.  **Configura** il tuo obiettivo:
-    * Scegli la tua **lingua** e **valuta** preferita in alto a destra.
-    * Inserisci il **motivo** del risparmio (es. "Viaggio in Giappone").
-    * Inserisci l'**obiettivo totale** e quanto hai **già accumulato**.
-4.  **Clicca su "Salva e Aggiorna"**: La dashboard si animerà mostrandoti i tuoi progressi!
-
----
-
-## 💡 Nota sulla Privacy
-Tutti i dati inseriti vengono salvati esclusivamente nella memoria locale del tuo browser (**localStorage**). Nessun dato viene inviato a server esterni o condiviso con terze parti.
+1.  **Download** the `index.html` file.
+2.  **Open** the file in any modern web browser (Chrome, Firefox, Edge, Safari).
+3.  **Set up** your goal:
+    * Select your preferred **Language** and **Currency** in the top-right corner.
+    * Enter your **Saving Reason** (e.g., "New MacBook Pro").
+    * Enter your **Total Target** and the **Amount Saved** so far.
+4.  **Click "Save & Update"**: Watch your dashboard come to life with your updated progress!
 
 ---
 
-*Creato con ❤️ per chi ama risparmiare con stile.*
+## 💡 Privacy Note
+All data entered is stored locally within your browser's **localStorage**. No data is sent to external servers or shared with third parties. Your financial goals remain 100% private.
+
+---
+
+*Created with ❤️ for smart savers.*
