@@ -1,0 +1,2 @@
+# Smart digital piggy bank
+Gemini ha detto This is a Digital Piggy Bank application designed with a sleek dark theme. It allows users to set a financial goal, specify what they are saving for, and track their progress.  The tool dynamically calculates both the remaining amount and the percentage left to reach the target, featuring a visual progress bar and a multi-language toggle (IT, EN, FR, DE, SP) in the top-right corner for a global user experience.
