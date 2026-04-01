@@ -1,52 +1,43 @@
-# 🐷 Digital Piggy Bank
+# 🐷 Digital Piggy Bank Pro
 
-A sleek, **dark-themed** web application to track your savings goals in real-time. This tool calculates exactly how much you need to reach your target, both in currency and percentage.
+Una dashboard moderna e interattiva per monitorare i tuoi obiettivi di risparmio. Questa versione avanzata non solo calcola quanto ti manca, ma visualizza i tuoi progressi con grafici dinamici e salva i dati localmente.
 
 ---
 
-## ✨ Features
+## ✨ Nuove Funzionalità
 
-* **Goal Tracking:** Set a specific reason for your savings (e.g., "New Laptop" or "Summer Trip").
-* **Real-time Analytics:** Instantly calculates the remaining amount and percentage left.
-* **Visual Progress:** Includes a dynamic progress bar to visualize your savings journey.
-* **Multilingual Support:** Switch between 5 languages via a top-right toggle:
-    * 🇮🇹 Italian
-    * 🇺🇸 English
-    * 🇫🇷 French
-    * 🇩🇪 German
-    * 🇪🇸 Spanish
-* **Responsive Dark Mode:** Modern UI designed for high readability and eye comfort.
+* **📊 Grafici Interattivi:** Visualizzazione a ciambella (Doughnut Chart) alimentata da *Chart.js* per un impatto visivo immediato.
+* **💾 Auto-Save:** Grazie all'integrazione con `localStorage`, i tuoi dati (obiettivo, risparmi, lingua e valuta) rimangono salvati anche se chiudi il browser.
+* **💱 Multi-Valuta:** Supporto per **Euro (€)**, **Dollaro ($)** e **Sterlina (£)** con conversione automatica dei valori inseriti.
+* **🌍 Multi-Lingua:** Interfaccia disponibile in 5 lingue (IT, EN, FR, DE, ES) con cambio istantaneo.
+* **📈 Statistiche Dettagliate:** Visualizzazione della percentuale di completamento e dell'importo esatto mancante.
+* **🌙 Tema Dark Premium:** Design moderno ottimizzato per il comfort visivo e l'estetica.
 
 ---
 
 ## 🛠️ Tech Stack
 
-This project is built using pure web technologies, making it extremely lightweight and fast:
-
-* **HTML5:** Structure and semantics.
-* **CSS3:** Custom properties (variables) for the dark theme and Flexbox for layout.
-* **JavaScript:** Vanilla ES6+ for logic and dynamic translations.
+* **HTML5** & **CSS3** (Layout a griglia e variabili personalizzate).
+* **JavaScript (ES6+)**: Logica di calcolo, gestione delle lingue e persistenza dati.
+* **Chart.js**: Libreria esterna per la generazione dei grafici animati.
 
 ---
 
-## 🚀 How to use
+## 🚀 Come Iniziare
 
-1.  **Clone** the repository:
-    ```bash
-    git clone [https://github.com/your-username/digital-piggy-bank.git](https://github.com/your-username/digital-piggy-bank.git)
-    ```
-2.  **Open** the `index.html` file in any modern web browser.
-3.  **Select** your preferred language from the dropdown menu.
-4.  **Enter** your goal, the reason, and the amount already saved.
-5.  **Click "Calculate"** to see your progress!
-
----
-
-## 📸 Preview
-
-> [!TIP]
-> The app is designed to be mobile-friendly. You can use it on your smartphone just as easily as on a desktop!
+1.  **Scarica** il file `index.html`.
+2.  **Apri** il file in un browser moderno (Chrome, Firefox, Edge, Safari).
+3.  **Configura** il tuo obiettivo:
+    * Scegli la tua **lingua** e **valuta** preferita in alto a destra.
+    * Inserisci il **motivo** del risparmio (es. "Viaggio in Giappone").
+    * Inserisci l'**obiettivo totale** e quanto hai **già accumulato**.
+4.  **Clicca su "Salva e Aggiorna"**: La dashboard si animerà mostrandoti i tuoi progressi!
 
 ---
 
-*Created with ❤️ for smart savers.*
+## 💡 Nota sulla Privacy
+Tutti i dati inseriti vengono salvati esclusivamente nella memoria locale del tuo browser (**localStorage**). Nessun dato viene inviato a server esterni o condiviso con terze parti.
+
+---
+
+*Creato con ❤️ per chi ama risparmiare con stile.*
