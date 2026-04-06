@@ -62,6 +62,8 @@ Regardless of the version you choose, **all data stays on your machine**. No fin
 ---
 
 # Example
+<img width="1017" height="622" alt="image" src="https://github.com/user-attachments/assets/6e6e4700-0e63-461f-aaa2-16307fed20f1" />
+<img width="978" height="422" alt="image" src="https://github.com/user-attachments/assets/851972d0-a479-4921-b217-c33876c480c6" />
 
 
 *Created with ❤️ for smart savers worldwide.*
