@@ -137,7 +137,6 @@
         .missing-highlight { color: var(--warning-color); font-size: 1.3rem; }
         .saved-highlight { color: var(--success-color); font-size: 1.3rem; }
 
-        /* NUOVE SEZIONI SOTTO */
         .history-section {
             width: 100%;
             max-width: 900px;
@@ -242,16 +241,15 @@
 
 <div class="history-section">
     <div class="card">
-        <h3 style="margin-top:0">Andamento Budget</h3>
+        <h3 style="margin-top:0" id="titleTrend">Andamento Budget</h3>
         <div id="trendChartContainer">
             <canvas id="trendChart"></canvas>
         </div>
     </div>
     <div class="card">
-        <h3 style="margin-top:0">Cronologia</h3>
-        <div class="history-list" id="historyList">
-            </div>
-        <button onclick="clearHistory()" style="font-size: 0.7rem; padding: 8px; background: #334155; margin-top: 15px; width: 100%;">Svuota Cronologia</button>
+        <h3 style="margin-top:0" id="titleHistory">Cronologia</h3>
+        <div class="history-list" id="historyList"></div>
+        <button onclick="clearHistory()" id="btnClearHistory" style="font-size: 0.7rem; padding: 8px; background: #334155; margin-top: 15px; width: 100%;">Svuota Cronologia</button>
     </div>
 </div>
 
@@ -259,17 +257,42 @@
     let myChart = null;
     let trendChart = null;
     let currentCurrency = 'EUR';
-    let historyData = []; // [{date: string, amount: number, diff: number}]
+    let historyData = [];
     
     const exchangeRates = { EUR: 1, USD: 1.08, GBP: 0.85 };
     const currencySymbols = { EUR: '€', USD: '$', GBP: '£' };
 
     const translations = {
-        it: { title: "Salvadanaio Digitale", lblReason: "Obiettivo di risparmio", lblTarget: "Target Totale", lblSaved: "Budget Attuale", btnCalc: "Salva e Aggiorna", txtMissing: "Mancano:", txtSavedPerc: "Accumulato:", completed: "Completato", saved: "Risparmiato", missing: "Mancante" },
-        en: { title: "Digital Piggy Bank", lblReason: "Saving Goal", lblTarget: "Total Target", lblSaved: "Current Budget", btnCalc: "Save & Update", txtMissing: "Remaining:", txtSavedPerc: "Saved:", completed: "Completed", saved: "Saved", missing: "Missing" },
-        fr: { title: "Ma Tirelire", lblReason: "Objectif d'épargne", lblTarget: "Cible Totale", lblSaved: "Budget Actuel", btnCalc: "Sauver et Mettre à jour", txtMissing: "Restant:", txtSavedPerc: "Accumulé:", completed: "Complété", saved: "Épargné", missing: "Manquant" },
-        de: { title: "Sparschwein", lblReason: "Sparziel", lblTarget: "Gesamtziel", lblSaved: "Aktuelles Budget", btnCalc: "Speichern", txtMissing: "Fehlend:", txtSavedPerc: "Gespart:", completed: "Abgeschlossen", saved: "Gespart", missing: "Fehlend" },
-        sp: { title: "Mi Hucha Digital", lblReason: "Meta de ahorro", lblTarget: "Meta Total", lblSaved: "Ahorro Actual", btnCalc: "Guardar y Actualizar", txtMissing: "Faltante:", txtSavedPerc: "Acumulado:", completed: "Completado", saved: "Ahorrado", missing: "Faltante" }
+        it: { 
+            title: "Salvadanaio Digitale", lblReason: "Obiettivo di risparmio", lblTarget: "Target Totale", 
+            lblSaved: "Budget Attuale", btnCalc: "Salva e Aggiorna", txtMissing: "Mancano:", 
+            txtSavedPerc: "Accumulato:", completed: "Completato", saved: "Risparmiato", missing: "Mancante",
+            trend: "Andamento Budget", history: "Cronologia", clearBtn: "Svuota Cronologia", confirmClear: "Vuoi davvero cancellare tutta la cronologia?"
+        },
+        en: { 
+            title: "Digital Piggy Bank", lblReason: "Saving Goal", lblTarget: "Total Target", 
+            lblSaved: "Current Budget", btnCalc: "Save & Update", txtMissing: "Remaining:", 
+            txtSavedPerc: "Saved:", completed: "Completed", saved: "Saved", missing: "Missing",
+            trend: "Budget Trend", history: "History Log", clearBtn: "Clear History", confirmClear: "Do you really want to clear the entire history?"
+        },
+        fr: { 
+            title: "Ma Tirelire", lblReason: "Objectif d'épargne", lblTarget: "Cible Totale", 
+            lblSaved: "Budget Actuel", btnCalc: "Sauver et Mettre à jour", txtMissing: "Restant:", 
+            txtSavedPerc: "Accumulé:", completed: "Complété", saved: "Épargné", missing: "Manquant",
+            trend: "Tendance du Budget", history: "Historique", clearBtn: "Effacer l'historique", confirmClear: "Voulez-vous vraiment effacer tout l'historique ?"
+        },
+        de: { 
+            title: "Sparschwein", lblReason: "Sparziel", lblTarget: "Gesamtziel", 
+            lblSaved: "Aktuelles Budget", btnCalc: "Speichern", txtMissing: "Fehlend:", 
+            txtSavedPerc: "Gespart:", completed: "Abgeschlossen", saved: "Gespart", missing: "Fehlend",
+            trend: "Budget-Verlauf", history: "Verlauf", clearBtn: "Verlauf löschen", confirmClear: "Möchten Sie wirklich den gesamten Verlauf löschen?"
+        },
+        sp: { 
+            title: "Mi Hucha Digital", lblReason: "Meta de ahorro", lblTarget: "Meta Total", 
+            lblSaved: "Ahorro Actual", btnCalc: "Guardar y Actualizar", txtMissing: "Faltante:", 
+            txtSavedPerc: "Acumulado:", completed: "Completado", saved: "Ahorrado", missing: "Faltante",
+            trend: "Tendencia del Presupuesto", history: "Historial", clearBtn: "Limpiar Historial", confirmClear: "¿Realmente quieres borrar todo il historial?"
+        }
     };
 
     function saveData() {
@@ -294,7 +317,6 @@
             document.getElementById('currencySelect').value = data.currency || "EUR";
             document.getElementById('langSelect').value = data.lang || "it";
             historyData = data.history || [];
-            
             currentCurrency = data.currency || "EUR";
             updateLanguage();
             updateHistoryUI();
@@ -304,15 +326,12 @@
     function updateHistoryUI() {
         const list = document.getElementById('historyList');
         list.innerHTML = '';
-        
-        // Mostra gli ultimi movimenti in alto
         [...historyData].reverse().forEach(item => {
             const div = document.createElement('div');
             div.className = 'history-item';
             const symbol = currencySymbols[currentCurrency];
             const diffClass = item.diff >= 0 ? 'amount-pos' : 'amount-neg';
             const sign = item.diff >= 0 ? '+' : '';
-            
             div.innerHTML = `
                 <span class="history-date">${item.date}</span>
                 <span class="${diffClass}">${sign}${item.diff.toFixed(2)} ${symbol}</span>
@@ -323,7 +342,8 @@
     }
 
     function clearHistory() {
-        if(confirm("Vuoi davvero cancellare tutta la cronologia?")) {
+        const lang = document.getElementById('langSelect').value;
+        if(confirm(translations[lang].confirmClear)) {
             historyData = [];
             saveData();
             updateHistoryUI();
@@ -333,16 +353,13 @@
     function updateTrendChart() {
         const ctx = document.getElementById('trendChart').getContext('2d');
         if (trendChart) trendChart.destroy();
-
-        const labels = historyData.map(h => h.date.split(',')[0]); // Solo data senza ora
+        const labels = historyData.map(h => h.date.split(',')[0]);
         const values = historyData.map(h => h.amount);
-
         trendChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Budget',
                     data: values,
                     borderColor: '#38bdf8',
                     backgroundColor: 'rgba(56, 189, 248, 0.1)',
@@ -373,11 +390,9 @@
             return;
         }
 
-        // Se l'utente preme il tasto, registriamo il movimento
         if (isManualUpdate) {
             const lastAmount = historyData.length > 0 ? historyData[historyData.length - 1].amount : 0;
             const diff = saved - lastAmount;
-            
             if (diff !== 0) {
                 const now = new Date();
                 const dateStr = now.toLocaleDateString() + ", " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
@@ -396,7 +411,6 @@
 
         const ctx = document.getElementById('myChart').getContext('2d');
         if (myChart) myChart.destroy();
-
         myChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
@@ -413,7 +427,6 @@
                 animation: { duration: 800 }
             }
         });
-
         saveData();
     }
 
@@ -421,19 +434,14 @@
         const newCurrency = document.getElementById('currencySelect').value;
         const targetInput = document.getElementById('target');
         const savedInput = document.getElementById('saved');
-        
         const rate = exchangeRates[newCurrency] / exchangeRates[currentCurrency];
-        
         if(targetInput.value) targetInput.value = (parseFloat(targetInput.value) * rate).toFixed(2);
         if(savedInput.value) savedInput.value = (parseFloat(savedInput.value) * rate).toFixed(2);
-        
-        // Convertiamo anche la cronologia per coerenza
         historyData = historyData.map(item => ({
             ...item,
             amount: item.amount * rate,
             diff: item.diff * rate
         }));
-
         currentCurrency = newCurrency;
         updateHistoryUI();
         calculate(false);
@@ -442,6 +450,8 @@
     function updateLanguage() {
         const lang = document.getElementById('langSelect').value;
         const t = translations[lang];
+        
+        // Aggiornamento testi principali
         document.getElementById('title').innerText = t.title;
         document.getElementById('lblReason').innerText = t.lblReason;
         document.getElementById('lblTarget').innerText = t.lblTarget;
@@ -450,6 +460,12 @@
         document.getElementById('txtMissing').innerText = t.txtMissing;
         document.getElementById('txtSavedPerc').innerText = t.txtSavedPerc;
         document.getElementById('perc-label').innerText = t.completed;
+
+        // Aggiornamento nuove sezioni
+        document.getElementById('titleTrend').innerText = t.trend;
+        document.getElementById('titleHistory').innerText = t.history;
+        document.getElementById('btnClearHistory').innerText = t.clearBtn;
+
         calculate(false);
     }
 </script>
