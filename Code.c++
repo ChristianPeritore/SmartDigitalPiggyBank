@@ -1,59 +1,58 @@
 #include <iostream>
-#include <fstream>
+#include <vector>
 #include <string>
 #include <iomanip>
-#include <map>
+#include <algorithm>
 
-using namespace std;
-
-struct Translation {
-    string title, reasonPrompt, targetPrompt, savedPrompt, remaining, completed;
+struct Transazione {
+    std::string data;
+    double variazione;
+    double totale_dopo;
 };
 
-map<string, Translation> dict = {
-    {"it", {"Salvadanaio Digitale", "Cosa vuoi comprare?", "Obiettivo", "Risparmiati", "Mancano", "Completato"}},
-    {"en", {"Digital Piggy Bank", "What are you buying?", "Target", "Saved", "Remaining", "Completed"}},
-    {"fr", {"Tirelire Numérique", "Qu'allez-vous acheter?", "Objectif", "Épargné", "Restant", "Complété"}},
-    {"de", {"Sparschwein", "Was möchtest du kaufen?", "Zielbetrag", "Gespart", "Verbleibend", "Abgeschlossen"}},
-    {"sp", {"Hucha Digital", "¿Qué quieres comprar?", "Objetivo", "Ahorrado", "Restante", "Completado"}}
-};
+class Salvadanaio {
+private:
+    std::string obiettivo;
+    double target;
+    double budgetAttuale;
+    std::vector<Transazione> cronologia;
 
-void saveToFile(string reason, double target, double saved, string lang) {
-    ofstream file("data.txt");
-    file << reason << endl << target << endl << saved << endl << lang;
-    file.close();
-}
+public:
+    Salvadanaio(std::string obj, double trg) : obiettivo(obj), target(trg), budgetAttuale(0.0) {}
+
+    void aggiorna(double nuovoImporto) {
+        double diff = nuovoImporto - budgetAttuale;
+        budgetAttuale = nuovoImporto;
+
+        // In C++ reale useresti <chrono>, qui simuliamo la stringa data
+        Transazione t = {"06/04/2026", diff, budgetAttuale};
+        cronologia.push_back(t);
+        mostraReport();
+    }
+
+    void mostraReport() {
+        double mancanti = std::max(0.0, target - budgetAttuale);
+        double perc = (budgetAttuale / target) * 100.0;
+
+        std::cout << "\n========== " << obiettivo << " ==========" << std::endl;
+        std::cout << "Completato: " << std::fixed << std::setprecision(2) << perc << "%" << std::endl;
+        std::cout << "Mancano: " << mancanti << " EUR" << std::endl;
+        std::cout << "------------------------------------" << std::endl;
+        std::cout << "CRONOLOGIA MOVIMENTI:" << std::endl;
+
+        for (const auto& t : cronologia) {
+            std::string segno = (t.variazione >= 0) ? "+" : "";
+            std::cout << t.data << " | " << segno << t.variazione << " EUR" << std::endl;
+        }
+    }
+};
 
 int main() {
-    string lang = "it", reason, currency = "€";
-    double target, saved;
-
-    cout << "Select Language (it, en, fr, de, sp): ";
-    cin >> lang;
+    Salvadanaio mioSalva("Vacanza", 2000.0);
     
-    Translation t = dict[lang];
-    cout << "\n--- " << t.title << " ---" << endl;
-
-    cout << t.reasonPrompt << ": ";
-    cin.ignore();
-    getline(cin, reason);
-
-    cout << t.targetPrompt << " (€): ";
-    cin >> target;
-
-    cout << t.savedPrompt << " (€): ";
-    cin >> saved;
-
-    double remaining = (target - saved > 0) ? target - saved : 0;
-    double percent = (saved / target) * 100;
-
-    cout << "\n--- RESULTS ---" << endl;
-    cout << "Item: " << reason << endl;
-    cout << t.remaining << ": " << fixed << setprecision(2) << remaining << "€" << endl;
-    cout << t.completed << ": " << setprecision(1) << percent << "%" << endl;
-
-    saveToFile(reason, target, saved, lang);
-    cout << "\nData saved to data.txt" << endl;
+    mioSalva.aggiorna(500.0);  // Aggiunta
+    mioSalva.aggiorna(1200.0); // Aggiunta
+    mioSalva.aggiorna(1100.0); // Perdita/Spesa
 
     return 0;
 }
