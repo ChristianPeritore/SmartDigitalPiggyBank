@@ -61,4 +61,7 @@ A versatile suite of tools to track your personal savings goals. Whether you pre
 Regardless of the version you choose, **all data stays on your machine**. No financial information is ever transmitted to a server or third-party service.
 ---
 
+# Example
+
+
 *Created with ❤️ for smart savers worldwide.*
