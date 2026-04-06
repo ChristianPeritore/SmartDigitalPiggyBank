@@ -1,36 +1,57 @@
-import datetime
+import os
 
-class Salvadanaio:
-    def __init__(self, obiettivo_nome, target):
-        self.obiettivo_nome = obiettivo_nome
-        self.target = target
-        self.budget_attuale = 0.0
-        self.cronologia = []
-
-    def aggiorna_budget(self, nuovo_importo):
-        differenza = nuovo_importo - self.budget_attuale
-        self.budget_attuale = nuovo_importo
-        data_ora = datetime.datetime.now().strftime("%d/%m/%Y, %H:%M")
+class PiggyBank:
+    def __init__(self):
+        self.history = []
+        self.target = 0.0
+        self.saved = 0.0
+        self.lang = "en"
         
-        # Registra la transazione
-        transazione = {
-            "data": data_ora,
-            "importo_totale": self.budget_attuale,
-            "variazione": differenza
+        self.translations = {
+            "it": {"title": "Salvadanaio Digitale", "target": "Target Totale", "current": "Budget Attuale", "missing": "Mancano", "saved": "Accumulato", "history": "Cronologia"},
+            "en": {"title": "Digital Piggy Bank", "target": "Total Target", "current": "Current Budget", "missing": "Remaining", "saved": "Saved", "history": "History Log"},
+            "fr": {"title": "Ma Tirelire", "target": "Cible Totale", "current": "Budget Actuel", "missing": "Restant", "saved": "Accumulé", "history": "Historique"},
+            "de": {"title": "Sparschwein", "target": "Gesamtziel", "current": "Aktuelles Budget", "missing": "Fehlend", "saved": "Gespart", "history": "Verlauf"},
+            "sp": {"title": "Mi Hucha Digital", "target": "Meta Total", "current": "Ahorro Actual", "missing": "Faltante", "saved": "Acumulado", "history": "Historial"}
         }
-        self.cronologia.append(transazione)
-        self.mostra_stato()
 
-    def mostra_stato(self):
-        mancanti = max(0, self.target - self.budget_attuale)
-        percentuale = min(100, (self.budget_attuale / self.target) * 100)
+    def clear_screen(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
+
+    def display(self):
+        self.clear_screen()
+        t = self.translations[self.lang]
+        missing = max(0, self.target - self.saved)
+        percent = (self.saved / self.target * 100) if self.target > 0 else 0
         
-        print(f"\n--- {self.obiettivo_nome} ---")
-        print(f"Target: {self.target:.2f}€")
-        print(f"Stato attuale: {self.budget_attuale:.2f}€ ({percentuale:.1f}%)")
-        print(f"Mancano: {mancanti:.2f}€")
-        print("-" * 20)
-        print("Ultimi movimenti:")
-        for t in self.cronologia[-5:]:  # Mostra gli ultimi 5
-            segno = "+" if t['variazione'] >= 0 else ""
-            print(f"[{t['data']}] {segno}{t['variazione']:.2f}€")
+        print(f"{'='*40}")
+        print(f"{t['title'].center(40)}")
+        print(f"{'='*40}")
+        print(f"{t['missing']}: {missing:.2f}")
+        print(f"{t['saved']}: {percent:.1f}%")
+        print(f"{'-'*40}")
+        print(f"{t['history']}:")
+        for entry in reversed(self.history[-5:]):
+            print(f" > {entry:.2f}")
+        print(f"{'='*40}")
+
+    def run(self):
+        self.lang = input("Language (it/en/fr/de/sp): ").lower()
+        if self.lang not in self.translations: self.lang = "en"
+        
+        self.target = float(input(f"{self.translations[self.lang]['target']}: "))
+        
+        while True:
+            try:
+                val = input(f"{self.translations[self.lang]['current']} (or 'q' to quit): ")
+                if val.lower() == 'q': break
+                
+                self.saved = float(val)
+                self.history.append(self.saved)
+                self.display()
+            except ValueError:
+                print("Invalid input!")
+
+if __name__ == "__main__":
+    bank = PiggyBank()
+    bank.run()
